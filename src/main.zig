@@ -1,6 +1,10 @@
 const w4 = @import("wasm4.zig");
 const std = @import("std");
 
+const RndGen = std.Random.DefaultPrng;
+
+var prnd = std.Random.DefaultPrng.init(42);
+
 const CARD_WIDTH: u8 = 24;
 const CARD_HEIGHT: u8 = 36;
 const SIDE_PANEL_POS: u8 = 112;
@@ -11,15 +15,7 @@ const Card = struct {
     found: bool = false,
 };
 
-var cards: [16]Card = .{
-    Card{ .id = 1, .text = "1", .found = false },
-    Card{ .id = 2, .text = "2", .found = false },
-    Card{ .id = 3, .text = "3", .found = false },
-    Card{ .id = 4, .text = "4", .found = false },
-    Card{ .id = 5, .text = "5", .found = false },
-    Card{ .id = 6, .text = "6", .found = false },
-    Card{ .id = 7, .text = "7", .found = false },
-    Card{ .id = 8, .text = "8", .found = false },
+const cards: [8]Card = .{
     Card{ .id = 1, .text = "1", .found = false },
     Card{ .id = 2, .text = "2", .found = false },
     Card{ .id = 3, .text = "3", .found = false },
@@ -33,14 +29,43 @@ var cards: [16]Card = .{
 var cursor: u4 = 0;
 var selected_card: i8 = -1;
 var prev_state: u8 = 0;
+var current_frame: usize = 0;
+
+var playing = false;
 
 var score: u4 = 0;
+
+var game_cards: [16]Card = undefined;
+
+fn start_game() void {
+    prnd.seed(current_frame);
+
+    game_cards = cards ** 2;
+    std.Random.shuffle(prnd.random(), comptime Card, &game_cards);
+
+    playing = true;
+}
 
 export fn start() void {}
 
 export fn update() void {
+    current_frame += 1;
+
     const gamepad = w4.GAMEPAD1.*;
     const just_pressed = gamepad & (gamepad ^ prev_state);
+
+    prev_state = gamepad;
+
+    if (!playing) {
+        w4.DRAW_COLORS.* = 2;
+        w4.text("Press A to start", 16, 160 / 2 - 4);
+
+        if (just_pressed & w4.BUTTON_1 != 0) {
+            start_game();
+        }
+
+        return;
+    }
 
     if (just_pressed & w4.BUTTON_1 != 0) {
         if (selected_card == -1) {
@@ -48,14 +73,21 @@ export fn update() void {
         } else if (selected_card != cursor) {
             const i_1: usize = @intCast(selected_card);
             const i_2: usize = @intCast(cursor);
-            if (cards[i_1].id == cards[i_2].id) {
-                cards[i_1].found = true;
-                cards[i_2].found = true;
+            if (game_cards[i_1].id == game_cards[i_2].id) {
+                game_cards[i_1].found = true;
+                game_cards[i_2].found = true;
 
                 score += 1;
             }
 
             selected_card = -1;
+
+            if (score == 8) {
+                cursor = 0;
+                score = 0;
+                playing = false;
+                return;
+            }
         }
     }
 
@@ -83,12 +115,10 @@ export fn update() void {
         }
     }
 
-    prev_state = gamepad;
-
     w4.DRAW_COLORS.* = 4;
     var y: u8 = 2;
     var x: u8 = 2;
-    for (cards, 0..) |card, i| {
+    for (game_cards, 0..) |card, i| {
         defer x += CARD_WIDTH + 4;
         if (i > 0 and i % 4 == 0) {
             x = 2;

@@ -26,24 +26,49 @@ const cards: [8]Card = .{
     Card{ .id = 8, .text = "8", .found = false },
 };
 
-var cursor: u4 = 0;
-var selected_card: i8 = -1;
 var prev_state: u8 = 0;
 var current_frame: usize = 0;
 
-var playing = false;
-
-var score: u4 = 0;
-
+var cursor: u4 = 0;
+var selected_card: i8 = -1;
 var game_cards: [16]Card = undefined;
+var playing = false;
+var score: u4 = 0;
 
 fn start_game() void {
     prnd.seed(current_frame);
 
+    score = 0;
+    cursor = 0;
+    selected_card = -1;
     game_cards = cards ** 2;
     std.Random.shuffle(prnd.random(), comptime Card, &game_cards);
 
     playing = true;
+}
+
+fn changeCursor(val: i8, cur_cursor: u4) void {
+    const next_cursor: i8 = cur_cursor + val;
+
+    if (next_cursor < 0) {
+        if (!game_cards[cur_cursor].found) {
+            return;
+        }
+
+        return changeCursor(1, cur_cursor);
+    } else if (next_cursor >= 16) {
+        if (!game_cards[cur_cursor].found) {
+            return;
+        }
+        return changeCursor(-1, cur_cursor);
+    }
+
+    const current_card: *Card = &game_cards[@intCast(next_cursor)];
+    if (current_card.found) {
+        changeCursor(val, @intCast(next_cursor));
+    } else {
+        cursor = @intCast(next_cursor);
+    }
 }
 
 export fn start() void {}
@@ -58,7 +83,10 @@ export fn update() void {
 
     if (!playing) {
         w4.DRAW_COLORS.* = 2;
-        w4.text("Press A to start", 16, 160 / 2 - 4);
+        if (score == 8) {
+            w4.text("You won!", 50, 160 / 2 - 44);
+        }
+        w4.text("Press X to start", 16, 160 / 2 - 4);
 
         if (just_pressed & w4.BUTTON_1 != 0) {
             start_game();
@@ -78,41 +106,33 @@ export fn update() void {
                 game_cards[i_2].found = true;
 
                 score += 1;
+
+                if (score != 8) {
+                    changeCursor(1, cursor);
+                } else {
+                    playing = false;
+                    return;
+                }
             }
 
             selected_card = -1;
-
-            if (score == 8) {
-                cursor = 0;
-                score = 0;
-                playing = false;
-                return;
-            }
         }
     }
 
     if (just_pressed & w4.BUTTON_DOWN != 0) {
-        if (cursor < 12) {
-            cursor += 4;
-        }
+        changeCursor(4, cursor);
     }
 
     if (just_pressed & w4.BUTTON_UP != 0) {
-        if (cursor >= 4) {
-            cursor -= 4;
-        }
+        changeCursor(-4, cursor);
     }
 
     if (just_pressed & w4.BUTTON_LEFT != 0) {
-        if (cursor > 0 and @mod(cursor, 4) != 0) {
-            cursor -= 1;
-        }
+        changeCursor(-1, cursor);
     }
 
     if (just_pressed & w4.BUTTON_RIGHT != 0) {
-        if (cursor < 15 and @mod(cursor + 1, 4) != 0) {
-            cursor += 1;
-        }
+        changeCursor(1, cursor);
     }
 
     w4.DRAW_COLORS.* = 4;

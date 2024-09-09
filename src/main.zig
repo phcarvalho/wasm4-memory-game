@@ -3,8 +3,6 @@ const std = @import("std");
 
 const sprites = @import("sprites.zig");
 
-const card_back = [_]u8{ 0xff, 0xff, 0x55, 0x55, 0x55, 0x55, 0x55, 0xff, 0xff, 0xff, 0xfd, 0x6a, 0x2a, 0xaa, 0xa8, 0xa9, 0x7f, 0xff, 0xff, 0xf5, 0xa8, 0x8a, 0xaa, 0xa2, 0x2a, 0x5f, 0xff, 0xff, 0xf6, 0xa2, 0xa2, 0xaa, 0x8a, 0x8a, 0x9f, 0xff, 0xff, 0xf6, 0x8a, 0xa8, 0xaa, 0x2a, 0xa2, 0x9f, 0xff, 0xff, 0xf6, 0x2a, 0xaa, 0x28, 0xaa, 0xa8, 0x9f, 0xff, 0xff, 0xf4, 0xaa, 0xaa, 0x82, 0xaa, 0xaa, 0x1f, 0xff, 0xff, 0xf4, 0xaa, 0xaa, 0x82, 0xaa, 0xaa, 0x1f, 0xff, 0xff, 0xf6, 0x2a, 0xaa, 0x28, 0xaa, 0xa8, 0x9f, 0xff, 0xff, 0xf6, 0x8a, 0xa8, 0xaa, 0x2a, 0xa2, 0x9f, 0xff, 0xff, 0xf6, 0xa2, 0xa2, 0xaa, 0x8a, 0x8a, 0x9f, 0xff, 0xff, 0xf6, 0xa8, 0x8a, 0xaa, 0xa2, 0x2a, 0x9f, 0xff, 0xff, 0xf6, 0xaa, 0x2a, 0xaa, 0xa8, 0xaa, 0x9f, 0xff, 0xff, 0xf6, 0xa8, 0x8a, 0xaa, 0xa2, 0x2a, 0x9f, 0xff, 0xff, 0xf6, 0xa2, 0xa2, 0xaa, 0x8a, 0x8a, 0x9f, 0xff, 0xff, 0xf6, 0x8a, 0xa8, 0xaa, 0x2a, 0xa2, 0x9f, 0xff, 0xff, 0xf6, 0x2a, 0xaa, 0x28, 0xaa, 0xa8, 0x9f, 0xff, 0xff, 0xf4, 0xaa, 0xaa, 0x82, 0xaa, 0xaa, 0x1f, 0xff, 0xff, 0xf4, 0xaa, 0xaa, 0x82, 0xaa, 0xaa, 0x1f, 0xff, 0xff, 0xf6, 0x2a, 0xaa, 0x28, 0xaa, 0xa8, 0x9f, 0xff, 0xff, 0xf6, 0x8a, 0xa8, 0xaa, 0x2a, 0xa2, 0x9f, 0xff, 0xff, 0xf6, 0xa2, 0xa2, 0xaa, 0x8a, 0x8a, 0x9f, 0xff, 0xff, 0xf6, 0xa8, 0x8a, 0xaa, 0xa2, 0x2a, 0x9f, 0xff, 0xff, 0xf6, 0xaa, 0x2a, 0xaa, 0xa8, 0xaa, 0x9f, 0xff, 0xff, 0xf6, 0xa8, 0x8a, 0xaa, 0xa2, 0x2a, 0x9f, 0xff, 0xff, 0xf6, 0xa2, 0xa2, 0xaa, 0x8a, 0x8a, 0x9f, 0xff, 0xff, 0xf6, 0x8a, 0xa8, 0xaa, 0x2a, 0xa2, 0x9f, 0xff, 0xff, 0xf6, 0x2a, 0xaa, 0x28, 0xaa, 0xa8, 0x9f, 0xff, 0xff, 0xf4, 0xaa, 0xaa, 0x82, 0xaa, 0xaa, 0x1f, 0xff, 0xff, 0xf4, 0xaa, 0xaa, 0x82, 0xaa, 0xaa, 0x1f, 0xff, 0xff, 0xf6, 0x2a, 0xaa, 0x28, 0xaa, 0xa8, 0x9f, 0xff, 0xff, 0xf6, 0x8a, 0xa8, 0xaa, 0x2a, 0xa2, 0x9f, 0xff, 0xff, 0xf6, 0xa2, 0xa2, 0xaa, 0x8a, 0x8a, 0x9f, 0xff, 0xff, 0xf5, 0xa8, 0x8a, 0xaa, 0xa2, 0x2a, 0x5f, 0xff, 0xff, 0xfd, 0x6a, 0x2a, 0xaa, 0xa8, 0xa9, 0x7f, 0xff, 0xff, 0xff, 0x55, 0x55, 0x55, 0x55, 0x55, 0xff, 0xff };
-
 const RndGen = std.Random.DefaultPrng;
 
 var prnd = std.Random.DefaultPrng.init(42);
@@ -20,30 +18,33 @@ const Card = struct {
 
 const cards: [8]Card = .{
     Card{ .id = 1, .sprite = &sprites.card_front_1, .found = false },
-    Card{ .id = 2, .sprite = &sprites.card_front_1, .found = false },
-    Card{ .id = 3, .sprite = &sprites.card_front_1, .found = false },
-    Card{ .id = 4, .sprite = &sprites.card_front_1, .found = false },
-    Card{ .id = 5, .sprite = &sprites.card_front_1, .found = false },
-    Card{ .id = 6, .sprite = &sprites.card_front_1, .found = false },
-    Card{ .id = 7, .sprite = &sprites.card_front_1, .found = false },
-    Card{ .id = 8, .sprite = &sprites.card_front_1, .found = false },
+    Card{ .id = 2, .sprite = &sprites.card_front_2, .found = false },
+    Card{ .id = 3, .sprite = &sprites.card_front_3, .found = false },
+    Card{ .id = 4, .sprite = &sprites.card_front_4, .found = false },
+    Card{ .id = 5, .sprite = &sprites.card_front_5, .found = false },
+    Card{ .id = 6, .sprite = &sprites.card_front_6, .found = false },
+    Card{ .id = 7, .sprite = &sprites.card_front_7, .found = false },
+    Card{ .id = 8, .sprite = &sprites.card_front_8, .found = false },
 };
 
 var prev_state: u8 = 0;
 var current_frame: usize = 0;
 
 var cursor: u4 = 0;
-var selected_card: i8 = -1;
+var selected_card: [2]i8 = undefined;
 var game_cards: [16]Card = undefined;
 var playing = false;
 var score: u4 = 0;
+
+var checking_cards: bool = false;
+var checking_timer: i8 = 0;
 
 fn start_game() void {
     prnd.seed(current_frame);
 
     score = 0;
     cursor = 0;
-    selected_card = -1;
+    selected_card = .{ -1, -1 };
     game_cards = cards ** 2;
     std.Random.shuffle(prnd.random(), comptime Card, &game_cards);
 
@@ -95,6 +96,8 @@ export fn update() void {
         w4.DRAW_COLORS.* = 2;
         if (score == 8) {
             w4.text("You won!", 50, 160 / 2 - 44);
+        } else {
+            w4.text("Memory Game", 36, 160 / 2 - 44);
         }
         w4.text("Press X to start", 16, 160 / 2 - 4);
 
@@ -105,27 +108,41 @@ export fn update() void {
         return;
     }
 
-    if (just_pressed & w4.BUTTON_1 != 0) {
-        if (selected_card == -1) {
-            selected_card = cursor;
-        } else if (selected_card != cursor) {
-            const i_1: usize = @intCast(selected_card);
-            const i_2: usize = @intCast(cursor);
-            if (game_cards[i_1].id == game_cards[i_2].id) {
-                game_cards[i_1].found = true;
-                game_cards[i_2].found = true;
+    if (!checking_cards and just_pressed & w4.BUTTON_1 != 0) {
+        if (selected_card[0] == -1) {
+            selected_card[0] = cursor;
+        } else if (cursor != selected_card[0]) {
+            selected_card[1] = cursor;
+
+            checking_cards = true;
+        }
+    }
+
+    if (checking_cards) {
+        checking_timer += 1;
+
+        if (checking_timer == 60) {
+            const card_1 = &game_cards[@intCast(selected_card[0])];
+            const card_2 = &game_cards[@intCast(selected_card[1])];
+
+            if (card_1.id == card_2.id) {
+                card_1.found = true;
+                card_2.found = true;
 
                 score += 1;
 
-                if (score != 8) {
-                    changeCursor(1, cursor);
-                } else {
+                if (score == 8) {
                     playing = false;
-                    return;
+                } else if (cursor == selected_card[0] or cursor == selected_card[1]) {
+                    changeCursor(1, cursor);
                 }
             }
 
-            selected_card = -1;
+            checking_cards = false;
+            checking_timer = 0;
+
+            selected_card[0] = -1;
+            selected_card[1] = -1;
         }
     }
 
@@ -146,13 +163,13 @@ export fn update() void {
     }
 
     w4.DRAW_COLORS.* = 4;
-    var y: u8 = 16;
-    var x: u8 = 16;
+    var y: u8 = 17;
+    var x: u8 = 17;
     for (game_cards, 0..) |card, i| {
-        defer x += CARD_SIZE + 8;
+        defer x += CARD_SIZE + 10;
         if (i > 0 and i % 4 == 0) {
-            x = 16;
-            y += CARD_SIZE + 16;
+            x = 17;
+            y += CARD_SIZE + 10;
         }
 
         if (card.found) continue;
@@ -163,7 +180,7 @@ export fn update() void {
         }
 
         w4.DRAW_COLORS.* = 0x4021;
-        if (selected_card == i) {
+        if (selected_card[0] == i or selected_card[1] == i) {
             w4.blit(card.sprite, x, y, CARD_SIZE, CARD_SIZE, w4.BLIT_2BPP);
         } else {
             w4.blit(&sprites.card_back, x, y, CARD_SIZE, CARD_SIZE, w4.BLIT_2BPP);

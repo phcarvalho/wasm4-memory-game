@@ -2,6 +2,12 @@
 
 A game written in Zig for the [WASM-4](https://wasm4.org) fantasy console.
 
+## Play Now!
+
+You can play the game on your browser: [Memory Game](https://phcarvalho.github.io/wasm4-memory-game/)
+
+![Game Image](./resources/screenshot.png)
+
 ## Building
 
 Build the cart by running:
